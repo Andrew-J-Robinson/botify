@@ -16,3 +16,6 @@ FFmpeg: https://ffmpeg.org/
 ```
 $ git clone https://github.com/aRobinson7/botify
 ```
+
+# Add Botify To Your Discord Server With This Link
+https://discordapp.com/api/oauth2/authorize?client_id=606288624480157696&permissions=0&scope=bot
