@@ -28,7 +28,7 @@ class Control(commands.Cog):
             await ctx.send("Sup, nerds?")
 
     #Command bot to leave voice channel
-#----------------------------------
+    #----------------------------------
     @commands.command(pass_context=True)
     @commands.has_any_role('Owner', 'Admin')
     async def leave(self, ctx):
