@@ -1,5 +1,5 @@
 '''
-    File name: botify.py
+    File name: main.py
     Author: Andrew Robinson
     Date Created: 7/31/2019
     Last Modified: 7/31/2019

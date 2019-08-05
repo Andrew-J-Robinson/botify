@@ -1,3 +1,11 @@
+'''
+    File name: control.py
+    Author: Andrew Robinson
+    Date Created: 8/3/2019
+    Last Modified: 8/3/2019
+    Python Version 3.6
+'''
+
 from bot import Bot
 
 import discord
@@ -20,12 +28,11 @@ class Control(commands.Cog):
 
         if voice and voice.is_connected():
             await voice.move_to(channel)
-            await ctx.send("I'm already in here, dummy.")
+            await ctx.send("I'm already in your voice channel.")
         else:
             voice = await channel.connect()
-            print(f"The bot has connected to {channel}\n")
+            print(f"Botify has connected to {channel}\n")
             await ctx.channel.purge(limit = 1)
-            await ctx.send("Sup, nerds?")
 
     #Command bot to leave voice channel
     #----------------------------------
@@ -39,10 +46,9 @@ class Control(commands.Cog):
             await ctx.channel.purge(limit = 1)
             await voice.disconnect()
             print(f"The bot has left {channel}\n")
-            await ctx.send("I'm out this mf.")
         else:
             print("Leave command failed: Bot not in channel\n")
-            await ctx.send("You tryna kick me out and I'm not even in here?")
+            await ctx.send("I must be in your voice channel to leave.")
 
 def setup(client):
     client.add_cog(Control(client))
