@@ -100,7 +100,7 @@ class Music(commands.Cog):
                     print("No more songs in queue\n")
                     self.queues.clear()
                     return
-                main_location = os.path.dirname(os.path.realpath(__file__))
+                main_location = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
                 song_path = os.path.abspath(os.path.realpath("Queue") + "//" + first_file)
                 if length != 0:
                     print("Playing next song in queue\n")
@@ -180,8 +180,9 @@ class Music(commands.Cog):
                 ydl.download([url])
         except:
             print("Fallback: youtube-dl doesn't support this link\n")
-            c_path = os.path.dirname(os.path.realpath(__file__))
+            c_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
             system("spotdl -f " + '"' + c_path + '"' + " -s " + url)
+
 
         #Check if the downloaded file is an mp3 and isn't the 'song.mp3' file used in another command
         #If both pass, rename the downloaded file to 'clip.mp3'
