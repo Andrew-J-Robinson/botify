@@ -73,12 +73,16 @@ class Music(commands.Cog):
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                 print("Downloading audio file now\n")
                 ydl.download([url])
-        except:
+        except RuntimeError:
             print("Fallback: youtube-dl doesn't support this link\n")
             q_path = os.path.abspath(os.path.realpath("Queue"))
             system(f"spotdl -ff song{q_num} -f " + '"' + q_path + '"' + " -s " + url)
+        except:
+            print("\nERROR: Song not found\n")
+            await ctx.send("I couldn't find that song, try queueing again with the title and artist typed out.")
+            return
 
-        await ctx.send("Adding song " + str(q_num) + " to the queue\n")
+        await ctx.send("Added song " + str(q_num) + " to the queue\n")
 
         print("Song added to queue\n")
 
@@ -87,7 +91,7 @@ class Music(commands.Cog):
     @commands.command(pass_context=True)
     @commands.has_any_role('Owner', 'Admin', 'Member')
     async def play(self, ctx, *, url: str):
-
+        embedColor = discord.Color.green()
         def check_queue():
             Queue_infile = os.path.isdir("./Queue")
             if Queue_infile is True:
@@ -178,11 +182,14 @@ class Music(commands.Cog):
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                 print("Downloading audio file now\n")
                 ydl.download([url])
-        except:
+        except RuntimeError:
             print("Fallback: youtube-dl doesn't support this link\n")
             c_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
             system("spotdl -f " + '"' + c_path + '"' + " -s " + url)
-
+        except:
+            print("\nERROR: Song not found\n")
+            await ctx.send("I couldn't find that song, try playing again with the title and artist typed out.")
+            return
 
         #Check if the downloaded file is an mp3 and isn't the 'song.mp3' file used in another command
         #If both pass, rename the downloaded file to 'clip.mp3'
@@ -193,15 +200,28 @@ class Music(commands.Cog):
                 print(f"Renamed file: {file}\n")
 
         if voice.is_connected(): #Check if the bot is connected to a voice channel. If it is, play the clip with FFmpeg
-            voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: check_queue())
-            voice.source = discord.PCMVolumeTransformer(voice.source)
-            voice.source.volume = 0.5
+            try:
+                voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: check_queue())
+                voice.source = discord.PCMVolumeTransformer(voice.source)
+                voice.source.volume = 0.5
+            except:
+                print("ERROR: Music is already playing")
+                await ctx.send("Music is already playing, queue that song instead.")
+                return
+
         else:
             print("ERROR: Bot isn't connected to a voice channel.\n")
 
-        newName = name.rsplit("-", 2)
-        print(f"{newName[0]} playing\n")
-        await ctx.send(f"Playing: {newName[0]}")
+        try:
+            newName = name.rsplit("-", 2)
+            embedTitle = (f"Playing {newName[0]}")
+            embed = discord.Embed(title=embedTitle, colour=embedColor, url=url)
+            print(f"{newName[0]} playing\n")
+            await ctx.send(embed=embed)
+        except:
+            embedDescription = (f"Playing song.")
+            embed = discord.Embed(title=embedDescription, colour=embedColor, url=url)
+            await ctx.send(embed=embed)
 
 #Command bot to pause voice output
 #-------------------------------------------------------------------------------
@@ -238,6 +258,10 @@ class Music(commands.Cog):
 
         self.queues.clear()
 
+        Queue_infile = os.path.isdir("./Queue")
+        if Queue_infile is True:
+            shutil.rmtree("./Queue")
+
         if voice and voice.is_playing():
             print("Music Stopped\n")
             voice.stop()
@@ -246,7 +270,19 @@ class Music(commands.Cog):
             print("Music not playing: Failed to Stop\n")
             await ctx.send("Music isn't playing")
 
+#Command bot to skip song in queue
+#-------------------------------------------------------------------------------
+    @commands.command(pass_context=True)
+    async def skip(self, ctx):
+        voice = get(self.client.voice_clients, guild=ctx.guild)
 
+        if voice and voice.is_playing():
+            print("Skipping song\n")
+            voice.stop()
+            await ctx.send("Skipping song.")
+        else:
+            print("Music not playing: Failed to skip\n")
+            await ctx.send("Music isn't playing")
 
 def setup(client):
     client.add_cog(Music(client))

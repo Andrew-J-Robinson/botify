@@ -18,7 +18,7 @@ def main():
     TOKEN = tokenFile.read().replace('\n', '')
     tokenFile.close()
 
-    botify = Bot(TOKEN, '!')
+    botify = Bot(TOKEN, '/')
 
     botify.run()
 
