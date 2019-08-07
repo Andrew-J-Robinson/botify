@@ -216,6 +216,8 @@ class Music(commands.Cog):
             newName = name.rsplit("-", 2)
             embedTitle = (f"Playing {newName[0]}")
             embed = discord.Embed(title=embedTitle, colour=embedColor, url=url)
+            embed.set_author(name=client.user.name, icon_url=client.user.avatar_url)
+            embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
             print(f"{newName[0]} playing\n")
             await ctx.send(embed=embed)
         except:
