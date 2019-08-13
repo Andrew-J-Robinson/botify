@@ -24,7 +24,7 @@ class Music(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.queues = {})
+        self.queues = {}
 
 #Command bot to queue next song
 #-------------------------------------------------------------------------------
