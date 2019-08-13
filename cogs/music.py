@@ -82,7 +82,13 @@ class Music(commands.Cog):
             await ctx.send("I couldn't find that song, try queueing again with the title and artist typed out.")
             return
 
-        await ctx.send("Added song " + str(q_num) + " to the queue\n")
+        newName = name.rsplit("-", 2)
+        embedTitle = (f"Added {newName[0]} to the queue\n")
+        embed = discord.Embed(title=embedTitle, colour=embedColor, url=url)
+        embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+        embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
+        print(f"{newName[0]} added to the queue.")
+        await ctx.send(embed=embed)
 
         print("Song added to queue\n")
 
@@ -216,14 +222,14 @@ class Music(commands.Cog):
             newName = name.rsplit("-", 2)
             embedTitle = (f"Playing {newName[0]}")
             embed = discord.Embed(title=embedTitle, colour=embedColor, url=url)
-            embed.set_author(name=client.user.name, icon_url=client.user.avatar_url)
+            embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
             embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
             print(f"{newName[0]} playing\n")
             await ctx.send(embed=embed)
         except:
             embedDescription = (f"Playing song.")
             embed = discord.Embed(title=embedDescription, colour=embedColor, url=url)
-            embed.set_author(name=client.user.name, icon_url=client.user.avatar_url)
+            embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
             embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
             print(f"{newName[0]} playing\n")
             await ctx.send(embed=embed)
