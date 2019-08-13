@@ -24,14 +24,16 @@ class Music(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.queues = {}
-        self.channel = self.client.get_channel(450502691785932802)              # messages will only be sent to this channel (general)
+        self.queues = {})
 
 #Command bot to queue next song
 #-------------------------------------------------------------------------------
 
     @commands.command(pass_context=True)
     async def queue(self, ctx,* , url: str):
+
+        channel = self.client.get_channel(450502691785932802)
+
         #Create queue directory
         Queue_infile = os.path.isdir("./Queue")
         if Queue_infile is False:
@@ -80,7 +82,7 @@ class Music(commands.Cog):
             system(f"spotdl -ff song{q_num} -f " + '"' + q_path + '"' + " -s " + url)
         except:
             print("\nERROR: Song not found\n")
-            await self.channel.send("I couldn't find that song, try queueing again with the title and artist typed out.")
+            await channel.send("I couldn't find that song, try queueing again with the title and artist typed out.")
             return
 
         newName = name.rsplit("-", 2)
@@ -89,7 +91,7 @@ class Music(commands.Cog):
         embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
         embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
         print(f"{newName[0]} added to the queue.")
-        await self.channel.send(embed=embed)
+        await channel.send(embed=embed)
 
         print("Song added to queue\n")
 
@@ -98,7 +100,11 @@ class Music(commands.Cog):
     @commands.command(pass_context=True)
     @commands.has_any_role('Owner', 'Admin', 'Member')
     async def play(self, ctx, *, url: str):
+
+        channel = self.client.get_channel(450502691785932802)
+
         embedColor = discord.Color.green()
+
         def check_queue():
             Queue_infile = os.path.isdir("./Queue")
             if Queue_infile is True:
@@ -148,7 +154,7 @@ class Music(commands.Cog):
                 print("Removed old song file\n")
         except PermissionError:
             print("ERROR to remove audio file: file is in use\n")
-            await self.channel.send("ERROR: audio clip is playing.")
+            await channel.send("ERROR: audio clip is playing.")
             return
 
         #Check to make sure there's no old Queue folder
@@ -161,7 +167,7 @@ class Music(commands.Cog):
         except:
             print("No old Queue folder\n")
 
-        await self.channel.send("Getting everything ready now")
+        await channel.send("Getting everything ready now")
         voice = get(self.client.voice_clients, guild=ctx.guild)#Initialize voice client
 
         #Sets youtube_dl options
@@ -195,7 +201,7 @@ class Music(commands.Cog):
             system("spotdl -f " + '"' + c_path + '"' + " -s " + url)
         except:
             print("\nERROR: Song not found\n")
-            await self.channel.send("I couldn't find that song, try playing again with the title and artist typed out.")
+            await channel.send("I couldn't find that song, try playing again with the title and artist typed out.")
             return
 
         #Check if the downloaded file is an mp3 and isn't the 'song.mp3' file used in another command
@@ -213,7 +219,7 @@ class Music(commands.Cog):
                 voice.source.volume = 0.5
             except:
                 print("ERROR: Music is already playing")
-                await self.channel.send("Music is already playing, queue that song instead.")
+                await channel.send("Music is already playing, queue that song instead.")
                 return
 
         else:
@@ -226,46 +232,55 @@ class Music(commands.Cog):
             embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
             embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
             print(f"{newName[0]} playing\n")
-            await self.channel.send(embed=embed)
+            await channel.send(embed=embed)
         except:
             embedDescription = (f"Playing song.")
             embed = discord.Embed(title=embedDescription, colour=embedColor, url=url)
             embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
             embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
             print(f"{newName[0]} playing\n")
-            await self.channel.send(embed=embed)
+            await channel.send(embed=embed)
 
 #Command bot to pause voice output
 #-------------------------------------------------------------------------------
     @commands.command(pass_context=True)
     async def pause(self, ctx):
+
+        channel = self.client.get_channel(450502691785932802)
+
         voice = get(self.client.voice_clients, guild=ctx.guild)
 
         if voice and voice.is_playing():
             print("Music Paused\n")
             voice.pause()
-            await self.channel.send("Music Paused")
+            await channel.send("Music Paused")
         else:
             print("Music not playing: Failed pause\n")
-            await self.channel.send("Music isn't playing")
+            await channel.send("Music isn't playing")
 
 #Command bot to resume voice output
 #-------------------------------------------------------------------------------
     @commands.command(pass_context=True, aliases=['res'])
     async def resume(self, ctx):
+
+        channel = self.client.get_channel(450502691785932802)
+
         voice = get(self.client.voice_clients, guild=ctx.guild)
         if voice and voice.is_paused():
             print("Resuming Music\n")
             voice.resume()
-            await self.channel.send("Resuming Music")
+            await channel.send("Resuming Music")
         else:
             print("Music is not paused\n")
-            await self.channel.send("Music isn't paused")
+            await channel.send("Music isn't paused")
 
 #Command bot to stop voice output
 #-------------------------------------------------------------------------------
     @commands.command(pass_context=True)
     async def stop(self, ctx):
+
+        channel = self.client.get_channel(450502691785932802)
+
         voice = get(self.client.voice_clients, guild=ctx.guild)
 
         self.queues.clear()
@@ -277,24 +292,27 @@ class Music(commands.Cog):
         if voice and voice.is_playing():
             print("Music Stopped\n")
             voice.stop()
-            await self.channel.send("Music stopped.")
+            await channel.send("Music stopped.")
         else:
             print("Music not playing: Failed to Stop\n")
-            await self.channel.send("Music isn't playing")
+            await channel.send("Music isn't playing")
 
 #Command bot to skip song in queue
 #-------------------------------------------------------------------------------
     @commands.command(pass_context=True)
     async def skip(self, ctx):
+
+        channel = self.client.get_channel(450502691785932802)
+
         voice = get(self.client.voice_clients, guild=ctx.guild)
 
         if voice and voice.is_playing():
             print("Skipping song\n")
             voice.stop()
-            await self.channel.send("Skipping song.")
+            await channel.send("Skipping song.")
         else:
             print("Music not playing: Failed to skip\n")
-            await self.channel.send("Music isn't playing")
+            await channel.send("Music isn't playing")
 
 def setup(client):
     client.add_cog(Music(client))
