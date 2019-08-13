@@ -25,6 +25,7 @@ class Music(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.queues = {}
+        self.channel = self.client.get_channel(450502691785932802)              # messages will only be sent to this channel (general)
 
 #Command bot to queue next song
 #-------------------------------------------------------------------------------
@@ -79,7 +80,7 @@ class Music(commands.Cog):
             system(f"spotdl -ff song{q_num} -f " + '"' + q_path + '"' + " -s " + url)
         except:
             print("\nERROR: Song not found\n")
-            await ctx.send("I couldn't find that song, try queueing again with the title and artist typed out.")
+            await self.channel.send("I couldn't find that song, try queueing again with the title and artist typed out.")
             return
 
         newName = name.rsplit("-", 2)
@@ -88,7 +89,7 @@ class Music(commands.Cog):
         embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
         embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
         print(f"{newName[0]} added to the queue.")
-        await ctx.send(embed=embed)
+        await self.channel.send(embed=embed)
 
         print("Song added to queue\n")
 
@@ -147,7 +148,7 @@ class Music(commands.Cog):
                 print("Removed old song file\n")
         except PermissionError:
             print("ERROR to remove audio file: file is in use\n")
-            await ctx.send("ERROR: audio clip is playing.")
+            await self.channel.send("ERROR: audio clip is playing.")
             return
 
         #Check to make sure there's no old Queue folder
@@ -160,7 +161,7 @@ class Music(commands.Cog):
         except:
             print("No old Queue folder\n")
 
-        await ctx.send("Getting everything ready now")
+        await self.channel.send("Getting everything ready now")
         voice = get(self.client.voice_clients, guild=ctx.guild)#Initialize voice client
 
         #Sets youtube_dl options
@@ -194,7 +195,7 @@ class Music(commands.Cog):
             system("spotdl -f " + '"' + c_path + '"' + " -s " + url)
         except:
             print("\nERROR: Song not found\n")
-            await ctx.send("I couldn't find that song, try playing again with the title and artist typed out.")
+            await self.channel.send("I couldn't find that song, try playing again with the title and artist typed out.")
             return
 
         #Check if the downloaded file is an mp3 and isn't the 'song.mp3' file used in another command
@@ -212,7 +213,7 @@ class Music(commands.Cog):
                 voice.source.volume = 0.5
             except:
                 print("ERROR: Music is already playing")
-                await ctx.send("Music is already playing, queue that song instead.")
+                await self.channel.send("Music is already playing, queue that song instead.")
                 return
 
         else:
@@ -225,14 +226,14 @@ class Music(commands.Cog):
             embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
             embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
             print(f"{newName[0]} playing\n")
-            await ctx.send(embed=embed)
+            await self.channel.send(embed=embed)
         except:
             embedDescription = (f"Playing song.")
             embed = discord.Embed(title=embedDescription, colour=embedColor, url=url)
             embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
             embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
             print(f"{newName[0]} playing\n")
-            await ctx.send(embed=embed)
+            await self.channel.send(embed=embed)
 
 #Command bot to pause voice output
 #-------------------------------------------------------------------------------
@@ -243,10 +244,10 @@ class Music(commands.Cog):
         if voice and voice.is_playing():
             print("Music Paused\n")
             voice.pause()
-            await ctx.send("Music Paused")
+            await self.channel.send("Music Paused")
         else:
             print("Music not playing: Failed pause\n")
-            await ctx.send("Music isn't playing")
+            await self.channel.send("Music isn't playing")
 
 #Command bot to resume voice output
 #-------------------------------------------------------------------------------
@@ -256,10 +257,10 @@ class Music(commands.Cog):
         if voice and voice.is_paused():
             print("Resuming Music\n")
             voice.resume()
-            await ctx.send("Resuming Music")
+            await self.channel.send("Resuming Music")
         else:
             print("Music is not paused\n")
-            await ctx.send("Music isn't paused")
+            await self.channel.send("Music isn't paused")
 
 #Command bot to stop voice output
 #-------------------------------------------------------------------------------
@@ -276,10 +277,10 @@ class Music(commands.Cog):
         if voice and voice.is_playing():
             print("Music Stopped\n")
             voice.stop()
-            await ctx.send("Music stopped.")
+            await self.channel.send("Music stopped.")
         else:
             print("Music not playing: Failed to Stop\n")
-            await ctx.send("Music isn't playing")
+            await self.channel.send("Music isn't playing")
 
 #Command bot to skip song in queue
 #-------------------------------------------------------------------------------
@@ -290,10 +291,10 @@ class Music(commands.Cog):
         if voice and voice.is_playing():
             print("Skipping song\n")
             voice.stop()
-            await ctx.send("Skipping song.")
+            await self.channel.send("Skipping song.")
         else:
             print("Music not playing: Failed to skip\n")
-            await ctx.send("Music isn't playing")
+            await self.channel.send("Music isn't playing")
 
 def setup(client):
     client.add_cog(Music(client))
