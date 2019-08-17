@@ -101,8 +101,11 @@ class Music(commands.Cog):
     @commands.has_any_role('Owner', 'Admin', 'Member')
     async def play(self, ctx, *, url: str):
 
-        channel = self.client.get_channel(450502691785932802)
+        # Variables to use in later commands
+        # "Channel" is used to send messages to the gerneral channel specifically
+        # "embedColor" is used to specify the color theme for various embeds
 
+        channel = self.client.get_channel(450502691785932802)
         embedColor = discord.Color.green()
 
         def check_queue():
