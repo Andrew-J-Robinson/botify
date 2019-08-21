@@ -36,20 +36,9 @@ class Music(commands.Cog):
         Variables for use later
         "channel" is used to send messages to the general channel specifically
         "songName" is used inside messages to report the song that is playing
-        "ydlOptions" configures the options for downloading the youtube audio
         '''
         channel = self.client.get_channel(592792914799624194)
         songName = url
-        ydlOptions = {
-            'format': 'bestaudio/best',
-            'quiet': True,
-            'outtmpl': queuePath,
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '320',
-            }],
-        }
 
         # Create Queue directory
         queueInfile = os.path.isdir("./Queue")
@@ -77,6 +66,17 @@ class Music(commands.Cog):
             searchResults = re.findall(r'href=\"\/watch\?v=(.{11})', htmlContent.read().decode())
             url = "http://www.youtube.com/watch?v=" + searchResults[0]
 
+        #"ydlOptions" configures the options for downloading the youtube audio
+        ydlOptions = {
+            'format': 'bestaudio/best',
+            'quiet': True,
+            'outtmpl': queuePath,
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '320',
+            }],
+        }
         try:
             # Download the file from  the given url using the initialized options above
             with youtube_dl.YoutubeDL(ydlOptions) as ydl:
