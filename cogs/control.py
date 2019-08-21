@@ -17,8 +17,8 @@ class Control(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    #Command bot to join voice channel
-    #---------------------------------
+    # Command bot to join voice channel
+    # ---------------------------------
     @commands.command(pass_context=True)
     @commands.has_any_role('Owner', 'Admin')
     async def join(self, ctx):
@@ -34,8 +34,8 @@ class Control(commands.Cog):
             print(f"Botify has connected to {channel}\n")
             await ctx.channel.purge(limit = 1)
 
-    #Command bot to leave voice channel
-    #----------------------------------
+    # Command bot to leave voice channel
+    # ----------------------------------
     @commands.command(pass_context=True)
     @commands.has_any_role('Owner', 'Admin')
     async def leave(self, ctx):

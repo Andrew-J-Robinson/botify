@@ -18,8 +18,8 @@ class Bot:
 
     def run(self):
 
-        #Connect to cogs folder
-        #----------------------
+        # Connect to cogs folder
+        # ----------------------
         @self.client.command()
         @commands.has_permissions(administrator=True)
         async def load(ctx, extension):
@@ -35,7 +35,7 @@ class Bot:
                 self.client.load_extension(f'cogs.{filename[:-3]}')
 
         @self.client.event
-        async def on_ready():
+        async def onReady():
             print(self.client.user.name + " is online.\n")
 
         self.client.run(self.token)
