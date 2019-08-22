@@ -14,7 +14,7 @@ class Bot:
     def __init__(self, TOKEN, CHAR):
         self.token = TOKEN
         self.prefix = CHAR
-        self.client = commands.Bot(command_prefix = self.prefix)
+        self.client = commands.Bot(command_prefix = self.prefix, case_insensitive=True)
 
     def run(self):
 

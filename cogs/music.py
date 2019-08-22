@@ -37,7 +37,7 @@ class Music(commands.Cog):
         "channel" is used to send messages to the general channel specifically
         "songName" is used inside messages to report the song that is playing
         '''
-        channel = self.client.get_channel(592792914799624194)
+        channel = self.client.get_channel(450502691785932802)
         songName = url
 
         # Create Queue directory
@@ -111,7 +111,7 @@ class Music(commands.Cog):
         # "channel" is used to send messages to the general channel specifically
         # "ydlOptions" configures the options for downloading the youtube audio
 
-        channel = self.client.get_channel(592792914799624194)
+        channel = self.client.get_channel(450502691785932802)
         ydlOptions = {
             'format': 'beat audio/best',
             'quiet': True,
@@ -266,7 +266,7 @@ class Music(commands.Cog):
     async def pause(self, ctx):
 
         # The bot will send messages to specified channel
-        channel = self.client.get_channel(592792914799624194)
+        channel = self.client.get_channel(450502691785932802)
 
 
         voice = get(self.client.voice_clients, guild=ctx.guild)
@@ -285,7 +285,7 @@ class Music(commands.Cog):
     async def resume(self, ctx):
 
         # The bot will send messages to specified channel
-        channel = self.client.get_channel(592792914799624194)
+        channel = self.client.get_channel(450502691785932802)
 
         voice = get(self.client.voice_clients, guild=ctx.guild)
         if voice and voice.is_paused():
@@ -302,7 +302,7 @@ class Music(commands.Cog):
     async def stop(self, ctx):
 
         # The bot will send messages to specified channel
-        channel = self.client.get_channel(592792914799624194)
+        channel = self.client.get_channel(450502691785932802)
 
         voice = get(self.client.voice_clients, guild=ctx.guild)
 
@@ -326,7 +326,7 @@ class Music(commands.Cog):
     async def skip(self, ctx):
 
         # The bot will send messages to specified channel
-        channel = self.client.get_channel(592792914799624194)
+        channel = self.client.get_channel(450502691785932802)
 
         voice = get(self.client.voice_clients, guild=ctx.guild)
 
