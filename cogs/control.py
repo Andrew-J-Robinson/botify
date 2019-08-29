@@ -16,6 +16,7 @@ class Control(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+        self.acceptedChannel = self.client.get_channel(610881900365479963)
 
     # Command bot to join voice channel
     # ---------------------------------
