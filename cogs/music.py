@@ -103,7 +103,7 @@ class Music(commands.Cog):
             print("Song added to queue\n")
         else:
             print("ERROR: A user attempted to send a command sin an unsupported channel")
-            await ctx.send("'''#send-bot-commands-here'''")
+            await ctx.send("```#send-bot-commands-here```")
 
 # Command bot to find youtube video and play audio
 # ------------------------------------------------------------------------------
@@ -266,7 +266,7 @@ class Music(commands.Cog):
                 await channel.send(embed=embed)
         else:
             print("ERROR: A user attempted to send a command sin an unsupported channel")
-            await ctx.send("'''#send-bot-commands-here'''")
+            await ctx.send("```#send-bot-commands-here```")
 
 # Command bot to pause voice output
 # -------------------------------------------------------------------------------
@@ -289,7 +289,7 @@ class Music(commands.Cog):
                 await channel.send("Music isn't playing")
         else:
             print("ERROR: A user attempted to send a command sin an unsupported channel")
-            await ctx.send("'''#send-bot-commands-here'''")
+            await ctx.send("```#send-bot-commands-here```")
 
 # Command bot to resume voice output
 # -------------------------------------------------------------------------------
@@ -310,7 +310,7 @@ class Music(commands.Cog):
                 await channel.send("Music isn't paused")
         else:
             print("ERROR: A user attempted to send a command sin an unsupported channel")
-            await ctx.send("'''#send-bot-commands-here'''")
+            await ctx.send("```#send-bot-commands-here```")
 
 # Command bot to stop voice output
 # -------------------------------------------------------------------------------
@@ -338,7 +338,7 @@ class Music(commands.Cog):
                 await channel.send("Music isn't playing")
         else:
             print("ERROR: A user attempted to send a command sin an unsupported channel")
-            await ctx.send("'''#send-bot-commands-here'''")
+            await ctx.send("```#send-bot-commands-here```")
 
 # Command bot to skip song in queue
 # -------------------------------------------------------------------------------
@@ -360,7 +360,7 @@ class Music(commands.Cog):
                 await channel.send("Music isn't playing")
         else:
             print("ERROR: A user attempted to send a command sin an unsupported channel")
-            await ctx.send("'''#send-bot-commands-here'''")
+            await ctx.send("```#send-bot-commands-here```")
 
 def setup(client):
     client.add_cog(Music(client))
