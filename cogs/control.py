@@ -39,7 +39,7 @@ class Control(commands.Cog):
                 await ctx.channel.purge(limit = 1)
         else:
             print("ERROR: A user attempted to send a command sin an unsupported channel")
-            await ctx.send("'''#send-bot-commands-here'''")
+            await ctx.send("```#send-bot-commands-here```")
 
     # Command bot to leave voice channel
     # ----------------------------------
@@ -60,7 +60,7 @@ class Control(commands.Cog):
                 await ctx.send("I must be in your voice channel to leave.")
         else:
             print("ERROR: A user attempted to send a command sin an unsupported channel")
-            await ctx.send("'''#send-bot-commands-here'''")
+            await ctx.send("```#send-bot-commands-here```")
 
 def setup(client):
     client.add_cog(Control(client))
