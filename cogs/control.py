@@ -23,8 +23,8 @@ class Control(commands.Cog):
     @commands.command(pass_context=True)
     @commands.has_any_role('Owner', 'Admin')
     async def join(self, ctx):
-
-        if ctx.channel == self.acceptedChannel:
+        #acceptedChannel = self.client.get_channel(610881900365479963)
+        if ctx.channel.id == 610881900365479963:
 
             global voice
             channel = ctx.message.author.voice.channel
@@ -47,7 +47,7 @@ class Control(commands.Cog):
     @commands.has_any_role('Owner', 'Admin')
     async def leave(self, ctx):
 
-        if ctx.channel == self.acceptedChannel:
+        if ctx.channel.id == 610881900365479963:
             channel = ctx.message.author.voice.channel
             voice = get(self.client.voice_clients, guild=ctx.guild)
 

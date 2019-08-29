@@ -38,7 +38,7 @@ class Music(commands.Cog):
         "songName" is used inside messages to report the song that is playing
         '''
 
-        if ctx.channel == self.acceptedChannel:
+        if ctx.channel.id == 610881900365479963:
             channel = self.client.get_channel(450502691785932802)
             songName = url
 
@@ -111,7 +111,7 @@ class Music(commands.Cog):
     @commands.has_any_role('Owner', 'Admin', 'Member')
     async def play(self, ctx, *, url: str):
 
-        if ctx.channel == self.acceptedChannel:
+        if ctx.channel.id == 610881900365479963:
             # Variables for use later
             # "channel" is used to send messages to the general channel specifically
             # "ydlOptions" configures the options for downloading the youtube audio
@@ -273,7 +273,7 @@ class Music(commands.Cog):
     @commands.command(pass_context=True)
     async def pause(self, ctx):
 
-        if ctx.channel == self.acceptedChannel:
+        if ctx.channel.id == 610881900365479963:
             # The bot will send messages to specified channel
             channel = self.client.get_channel(450502691785932802)
 
@@ -296,7 +296,7 @@ class Music(commands.Cog):
     @commands.command(pass_context=True, aliases=['res'])
     async def resume(self, ctx):
 
-        if ctx.channel == self.acceptedChannel:
+        if ctx.channel.id == 610881900365479963:
             # The bot will send messages to specified channel
             channel = self.client.get_channel(450502691785932802)
 
@@ -317,7 +317,7 @@ class Music(commands.Cog):
     @commands.command(pass_context=True)
     async def stop(self, ctx):
 
-        if ctx.channel == self.acceptedChannel:
+        if ctx.channel.id == 610881900365479963:
             # The bot will send messages to specified channel
             channel = self.client.get_channel(450502691785932802)
 
@@ -345,7 +345,7 @@ class Music(commands.Cog):
     @commands.command(pass_context=True)
     async def skip(self, ctx):
 
-        if ctx.channel == self.acceptedChannel:
+        if ctx.channel.id == 610881900365479963:
             # The bot will send messages to specified channel
             channel = self.client.get_channel(450502691785932802)
 
