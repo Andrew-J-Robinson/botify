@@ -22,33 +22,41 @@ class Control(commands.Cog):
     @commands.command(pass_context=True)
     @commands.has_any_role('Owner', 'Admin')
     async def join(self, ctx):
-        global voice
-        channel = ctx.message.author.voice.channel
-        voice = get(self.client.voice_clients, guild=ctx.guild)
+        if ctx.channel != acceptedChannel:
+            global voice
+            channel = ctx.message.author.voice.channel
+            voice = get(self.client.voice_clients, guild=ctx.guild)
 
-        if voice and voice.is_connected():
-            await voice.move_to(channel)
-            await ctx.send("I'm already in your voice channel.")
+            if voice and voice.is_connected():
+                await voice.move_to(channel)
+                await ctx.send("I'm already in your voice channel.")
+            else:
+                voice = await channel.connect()
+                print(f"Botify has connected to {channel}\n")
+                await ctx.channel.purge(limit = 1)
         else:
-            voice = await channel.connect()
-            print(f"Botify has connected to {channel}\n")
-            await ctx.channel.purge(limit = 1)
+            print("ERROR: A user attempted to send a command sin an unsupported channel")
+            await channel.send("'''#send-bot-commands-here'''")
 
     # Command bot to leave voice channel
     # ----------------------------------
     @commands.command(pass_context=True)
     @commands.has_any_role('Owner', 'Admin')
     async def leave(self, ctx):
-        channel = ctx.message.author.voice.channel
-        voice = get(self.client.voice_clients, guild=ctx.guild)
+        if ctx.channel != acceptedChannel:
+            channel = ctx.message.author.voice.channel
+            voice = get(self.client.voice_clients, guild=ctx.guild)
 
-        if voice and voice.is_connected():
-            await ctx.channel.purge(limit = 1)
-            await voice.disconnect()
-            print(f"The bot has left {channel}\n")
+            if voice and voice.is_connected():
+                await ctx.channel.purge(limit = 1)
+                await voice.disconnect()
+                print(f"The bot has left {channel}\n")
+            else:
+                print("Leave command failed: Bot not in channel\n")
+                await ctx.send("I must be in your voice channel to leave.")
         else:
-            print("Leave command failed: Bot not in channel\n")
-            await ctx.send("I must be in your voice channel to leave.")
+            print("ERROR: A user attempted to send a command sin an unsupported channel")
+            await channel.send("'''#send-bot-commands-here'''")
 
 def setup(client):
     client.add_cog(Control(client))
